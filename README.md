@@ -14,7 +14,7 @@ Installation:
 
 3. Install dependencies:
 
-   npm install
+   pnpm install
 
 Usage:
 
@@ -27,6 +27,8 @@ Configuration:
    - EDENRED_USERNAME=your_edenred_username
    - EDENRED_PASSWORD=your_edenred_password
    - ACTUAL_API_KEY=your_actual_api_key
+   - ACTUAL_SERVER=your_actual_server_host
+   - ACTUAL_BUDGET=your_budget_id
 
 Commands:
 
