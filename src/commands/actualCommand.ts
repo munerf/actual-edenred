@@ -2,6 +2,7 @@ import { Command } from 'commander'
 import createEdenredAPI, { AccountInfo } from '../services/edenredService'
 import { logDebug } from '../utils/logger'
 import { ActualService, Transaction } from '../services/actualService'
+import { handleError } from '../utils/errorHandler'
 
 export function actualCommand(program: Command) {
   program
@@ -68,8 +69,7 @@ export function actualCommand(program: Command) {
         )
         actualAPI.shutdown()
       } catch (error) {
-        console.error('An error occurred:', error.message)
-        logDebug(`Error occurred: ${error}`)
+        handleError(error)
       }
     })
 }

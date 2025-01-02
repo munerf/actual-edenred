@@ -1,6 +1,7 @@
 import { Command } from 'commander'
 import createEdenredAPI, { AccountInfo } from '../services/edenredService'
 import { logDebug } from '../utils/logger'
+import { handleError } from '../utils/errorHandler'
 
 export function edenredCommand(program: Command) {
   program
@@ -19,9 +20,7 @@ export function edenredCommand(program: Command) {
 
         logDebug('List of cards retrieved successfully.')
       } catch (error) {
-        console.error('An error occurred:', error.message)
-
-        logDebug(`Error occurred: ${error}`)
+        handleError(error)
       }
     })
 
@@ -49,8 +48,7 @@ export function edenredCommand(program: Command) {
 
         logDebug(`Movements of ${card.name} retrieved successfully.`)
       } catch (error) {
-        console.error('An error occurred:', error.message)
-        logDebug(`Error occurred: ${error}`)
+        handleError(error)
       }
     })
 }
