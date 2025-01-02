@@ -14,11 +14,14 @@ const createEdenredService = () => {
   })
 
   const login = async (userId: string, password: string): Promise<void> => {
+    console.log('login', userId, password)
     const response = await axiosInstance.post(
-      '/authenticate/default?appVersion=1.0&appType=PORTAL&channel=WEB',
+      '/authenticate/pin?appVersion=4.1.1&appType=IOS&channel=MOBILE',
       {
         userId,
         password,
+        appVersion: '4.1.1',
+        appType: 'IOS',
       },
     )
 
