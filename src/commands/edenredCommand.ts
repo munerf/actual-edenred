@@ -10,7 +10,7 @@ export function edenredCommand(program: Command) {
       try {
         const edenredAPI = createEdenredAPI()
         await edenredAPI.login(
-          process.env.EDENRED_USERNAME!,
+          process.env.EDENRED_USERID!,
           process.env.EDENRED_PASSWORD!,
         )
 
@@ -33,7 +33,7 @@ export function edenredCommand(program: Command) {
       try {
         const edenredAPI = createEdenredAPI()
         await edenredAPI.login(
-          process.env.EDENRED_USERNAME!,
+          process.env.EDENRED_USERID!,
           process.env.EDENRED_PASSWORD!,
         )
 

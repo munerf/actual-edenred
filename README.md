@@ -35,8 +35,8 @@ A command-line interface (CLI) tool for managing transactions between Edenred an
 
    ```env
    # Edenred API Credentials
-   EDENRED_USERNAME=your_edenred_username
-   EDENRED_PASSWORD=your_edenred_password
+   EDENRED_USERID=your_edenred_userid
+   EDENRED_PASSWORD=your_edenred_pin
 
    # Actual Budget API Configuration
    ACTUAL_SERVER=https://your-actual-server.com
@@ -47,6 +47,8 @@ A command-line interface (CLI) tool for managing transactions between Edenred an
    # Optional: Enable debug logging
    DEBUG=false
    ```
+
+> **Note**: Edenred changed their authentication system. You now need to use your **User ID** and **PIN** (not username/password). The PIN is the same one used in the Edenred mobile app.
 
 ## Usage
 
@@ -121,7 +123,33 @@ actual-edenred import <edenred_account> <actual_account>
 - Node.js 20.x or higher (recommended for better native module support)
 - pnpm package manager
 
-Contributing:
+## Technical Notes
+
+### Reverse Engineering the PIN Authentication
+
+Edenred Portugal changed their web authentication system, making the traditional username/password login obsolete. The new PIN-based authentication was reverse-engineered using the following process:
+
+1. **Setup Proxyman on iPhone**
+   - Install [Proxyman](https://proxyman.io/) on your Mac
+   - Install the Proxyman certificate on your iPhone ([follow the official guide](https://docs.proxyman.io/debug-devices/ios-device))
+   - Configure your iPhone to use your Mac as an HTTP proxy
+
+2. **Capture Mobile App Traffic**
+   - Open the Edenred mobile app on your iPhone
+   - Log in using your PIN
+   - In Proxyman, filter requests to `myedenred.pt`
+
+3. **Identify the Authentication Endpoint**
+   - Look for the POST request to `/authenticate/pin`
+   - Note the request headers, body, and query parameters
+   - Key findings:
+     - Endpoint: `/authenticate/pin?appVersion=4.1.1&appType=IOS&channel=MOBILE`
+     - Request body includes: `userId`, `password` (PIN), `appVersion`, `appType`
+     - Response contains the authentication token
+
+The authenticated token from the mobile endpoint works for both mobile and web API endpoints, which is how this CLI continues to function with Edenred's current authentication system.
+
+## Contributing
 
 Contributions are welcome! Please submit issues or pull requests if you encounter any problems or have suggestions for improvements.
 
