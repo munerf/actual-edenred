@@ -19,7 +19,8 @@ export function edenredCommand(program: Command) {
 
         logDebug('List of cards retrieved successfully.')
       } catch (error) {
-        console.error('An error occurred:', error.message)
+        const message = error instanceof Error ? error.message : String(error)
+        console.error('An error occurred:', message)
 
         logDebug(`Error occurred: ${error}`)
       }
@@ -49,7 +50,8 @@ export function edenredCommand(program: Command) {
 
         logDebug(`Movements of ${card.name} retrieved successfully.`)
       } catch (error) {
-        console.error('An error occurred:', error.message)
+        const message = error instanceof Error ? error.message : String(error)
+        console.error('An error occurred:', message)
         logDebug(`Error occurred: ${error}`)
       }
     })

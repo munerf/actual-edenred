@@ -68,7 +68,8 @@ export function actualCommand(program: Command) {
         )
         actualAPI.shutdown()
       } catch (error) {
-        console.error('An error occurred:', error.message)
+        const message = error instanceof Error ? error.message : String(error)
+        console.error('An error occurred:', message)
         logDebug(`Error occurred: ${error}`)
       }
     })

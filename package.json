@@ -1,28 +1,48 @@
 {
   "name": "actual-edenred",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint . --ext .ts",
-    "format": "prettier --write 'src/**/*.ts'"
+  "description": "CLI tool for managing transactions between Edenred and Actual Budget APIs",
+  "main": "dist/cli.js",
+  "bin": {
+    "actual-edenred": "./dist/bin.js"
   },
-  "keywords": [],
+  "scripts": {
+    "build": "pnpm exec tsc",
+    "clean": "rm -rf dist",
+    "dev": "pnpm exec tsx src/bin.ts",
+    "start": "node dist/bin.js",
+    "prebuild": "pnpm run clean",
+    "prepublish": "pnpm run build",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "pnpm exec eslint . --ext .ts",
+    "format": "pnpm exec prettier --write 'src/**/*.ts'"
+  },
+  "keywords": [
+    "edenred",
+    "actual-budget",
+    "cli",
+    "finance",
+    "transactions"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@actual-app/api": "^6.6.0",
-    "@types/node": "^20.11.24",
-    "axios": "^1.6.7",
-    "commander": "^12.0.0",
-    "dotenv": "^16.4.5"
+    "@actual-app/api": "^25.10.0",
+    "@types/node": "^22.10.2",
+    "axios": "^1.7.9",
+    "commander": "^12.1.0",
+    "dotenv": "^16.4.7"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^7.1.1",
-    "@typescript-eslint/parser": "^7.1.1",
-    "eslint": "^8.57.0",
-    "prettier": "^3.2.5",
-    "typescript": "^5.3.3"
-  }
+    "@typescript-eslint/eslint-plugin": "^8.19.1",
+    "@typescript-eslint/parser": "^8.19.1",
+    "eslint": "^9.17.0",
+    "prettier": "^3.4.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ]
 }
