@@ -121,6 +121,44 @@ actual-edenred import <edenred_account> <actual_account>
 - Node.js 20.x or higher (recommended for better native module support)
 - pnpm package manager
 
+## Deployment
+
+When deploying to a server (especially Linux servers):
+
+1. **Do NOT copy `node_modules` from your development machine**
+2. Install dependencies on the target server:
+
+```bash
+cd /path/to/actual-edenred
+pnpm install
+pnpm build
+```
+
+### Why?
+
+This project depends on `@actual-app/api`, which uses `better-sqlite3` - a native Node.js module that must be compiled for the specific operating system and Node.js version. Installing dependencies directly on the target server ensures native modules are built correctly.
+
+## Troubleshooting
+
+### Error: "Could not locate the bindings file" for better_sqlite3
+
+**Cause:** Native modules were installed on a different OS (e.g., macOS) than where they're being run (e.g., Linux).
+
+**Solution:** Rebuild native dependencies on the target machine:
+
+```bash
+# Option 1: Reinstall all dependencies (recommended)
+rm -rf node_modules
+pnpm install
+
+# Option 2: Rebuild just the native modules
+pnpm rebuild better-sqlite3
+```
+
+### TLS Certificate Warning
+
+If you see `NODE_TLS_REJECT_UNAUTHORIZED` warnings, ensure your Actual Budget server has a valid SSL certificate. In production, never set `NODE_TLS_REJECT_UNAUTHORIZED=0` as it makes connections insecure.
+
 Contributing:
 
 Contributions are welcome! Please submit issues or pull requests if you encounter any problems or have suggestions for improvements.
