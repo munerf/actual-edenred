@@ -11,10 +11,7 @@ export function actualCommand(program: Command) {
       try {
         const edenredAPI = createEdenredAPI()
 
-        await edenredAPI.login(
-          process.env.EDENRED_USERNAME!,
-          process.env.EDENRED_PASSWORD!,
-        )
+        await edenredAPI.loginFromEnv()
 
         const cards = await edenredAPI.listCards()
         const edenredAccountInfo = cards.find(
