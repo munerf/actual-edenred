@@ -9,10 +9,7 @@ export function edenredCommand(program: Command) {
     .action(async () => {
       try {
         const edenredAPI = createEdenredAPI()
-        await edenredAPI.login(
-          process.env.EDENRED_USERNAME!,
-          process.env.EDENRED_PASSWORD!,
-        )
+        await edenredAPI.loginFromEnv()
 
         const cards = await edenredAPI.listCards()
         console.log('List of cards:', cards)
@@ -32,10 +29,7 @@ export function edenredCommand(program: Command) {
     .action(async (cardname: string) => {
       try {
         const edenredAPI = createEdenredAPI()
-        await edenredAPI.login(
-          process.env.EDENRED_USERNAME!,
-          process.env.EDENRED_PASSWORD!,
-        )
+        await edenredAPI.loginFromEnv()
 
         const cards = await edenredAPI.listCards()
         const card = cards.find(

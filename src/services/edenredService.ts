@@ -13,16 +13,53 @@ const createEdenredService = () => {
     withCredentials: true,
   })
 
-  const login = async (userId: string, password: string): Promise<void> => {
-    const response = await axiosInstance.post(
-      '/authenticate/default?appVersion=1.0&appType=PORTAL&channel=WEB',
-      {
-        userId,
-        password,
-      },
-    )
+  const login = async (
+    userId: string,
+    password: string,
+    type: 'default' | 'pin' = 'default',
+  ): Promise<void> => {
+    const endpoint =
+      type === 'pin'
+        ? '/authenticate/pin?appVersion=1.0&appType=PORTAL&channel=WEB'
+        : '/authenticate/default?appVersion=1.0&appType=PORTAL&channel=WEB'
 
-    token = response.data.data.token
+    const response = await axiosInstance.post(endpoint, {
+      userId,
+      password,
+    })
+
+    const authToken = response.data.data?.token
+    if (authToken) {
+      token = authToken
+      return
+    }
+
+    if (response.data.data?.challengeId) {
+      throw new Error(
+        '2FA required. Set EDENRED_USERID and EDENRED_PIN in .env for PIN authentication.',
+      )
+    }
+
+    throw new Error('Authentication failed.')
+  }
+
+  const loginFromEnv = async (): Promise<void> => {
+    const userId = process.env.EDENRED_USERID
+    const pin = process.env.EDENRED_PIN
+
+    if (userId && pin) {
+      await login(userId, pin, 'pin')
+      return
+    }
+
+    const username = process.env.EDENRED_USERNAME
+    const password = process.env.EDENRED_PASSWORD
+
+    if (!username || !password) {
+      throw new Error('Edenred credentials not found in .env')
+    }
+
+    await login(username, password, 'default')
   }
 
   const listCards = async (): Promise<AccountInfo[]> => {
@@ -57,7 +94,7 @@ const createEdenredService = () => {
     return response.data.data.movementList
   }
 
-  return { login, listCards, getMovements }
+  return { login, loginFromEnv, listCards, getMovements }
 }
 
 export default createEdenredService
